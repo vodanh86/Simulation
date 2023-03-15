@@ -16,6 +16,10 @@ public class FlashImage : MonoBehaviour
 {
     [Header("General")]
     [SerializeField] bool _loopOnEnable = false;
+
+    [SerializeField]
+    FlashlightPlugin flashlightPlugin;
+
     [Range(0, 1)] [SerializeField] float _startingAlpha = 0;
     [SerializeField] float _secondsForOneFlash = 2f;
     public float SecondsForOneFlash
@@ -141,7 +145,7 @@ public class FlashImage : MonoBehaviour
             StopCoroutine(_flashRoutine);
         }
         SetAlphaToDefault();
-
+        flashlightPlugin.TurnOff();
         OnStop.Invoke();
     }
     #endregion
@@ -149,7 +153,6 @@ public class FlashImage : MonoBehaviour
     #region Private Functions
     IEnumerator FlashOnce(float secondsForOneFlash, float minAlpha, float maxAlpha)
     {
-            
         // half the flash time should be on flash in, the other half for flash out
         float flashInDuration = secondsForOneFlash / 2;
         float flashOutDuration = secondsForOneFlash / 2;
@@ -183,6 +186,7 @@ public class FlashImage : MonoBehaviour
         // start the flash cycle
         while (true)
         {
+            flashlightPlugin.TurnOn();
             OnCycleStart.Invoke();
             // flash in
             for (float t = 0f; t <= flashInDuration; t += Time.deltaTime)
@@ -203,6 +207,7 @@ public class FlashImage : MonoBehaviour
                 yield return null;
             }
                 
+            flashlightPlugin.TurnOff();
             OnCycleComplete.Invoke();
         }
     }

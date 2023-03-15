@@ -25,17 +25,6 @@ public class ActiveStun : Singleton<ActiveStun>
     void Start()
     {
         Debug.Log(GlobalVariables.Get<string>("model"));
-        javaObject = new AndroidJavaClass("com.myflashlight.flashlightlib.Flashlight");
-    }
-
-    public void TurnOn()
-    {
-        javaObject.CallStatic("on", GetUnityActivity());
-    }
-
-    public void TurnOff()
-    {
-        javaObject.CallStatic("off", GetUnityActivity());
     }
 
     AndroidJavaObject GetUnityActivity()
@@ -77,7 +66,6 @@ public class ActiveStun : Singleton<ActiveStun>
             stt = false;
             AudioManager.Ins.PlayThisSound();
             flashImage.StopFlashLoop();
-            ActiveStun.Ins.TurnOff();
         }
     }
 
