@@ -5,6 +5,7 @@ using UnityEngine;
 public class FlashlightPlugin : MonoBehaviour
 {
     public AndroidJavaClass javaObject;
+
     void Start()
     {
         javaObject = new AndroidJavaClass("com.myflashlight.flashlightlib.Flashlight");
@@ -12,21 +13,25 @@ public class FlashlightPlugin : MonoBehaviour
 
     public void TurnOn()
     {
-        javaObject.CallStatic("on", GetUnityActivity());
+        Debug.Log("On");
+        #if !UNITY_EDITOR
+            javaObject.CallStatic("on", GetUnityActivity());
+        #endif
     }
-    
+
     public void TurnOff()
     {
-        javaObject.CallStatic("off", GetUnityActivity());
+        Debug.Log("Off");
+        #if !UNITY_EDITOR
+            javaObject.CallStatic("off", GetUnityActivity());
+        #endif
     }
-    
-     AndroidJavaObject GetUnityActivity(){
-         using ( var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-         {
-             return unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-         }
-     }
 
-        
-        
+    AndroidJavaObject GetUnityActivity()
+    {
+        using (var unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
+        {
+            return unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
+        }
+    }
 }
